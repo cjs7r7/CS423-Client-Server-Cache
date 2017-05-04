@@ -53,7 +53,7 @@ public class Client extends JFrame {
 		cb = new JComboBox<>(choices);
 		panel.add(cb);
 
-		// Execute
+		// Add Get File Button
 		JButton getFileButton = new JButton("Get File");
 		getFileButton.addActionListener(new ActionListener() {
 
@@ -74,12 +74,13 @@ public class Client extends JFrame {
 					//Header with Epoch Time 1
 					urlConnection.setRequestProperty("Time1", ((Long)System.currentTimeMillis()).toString());
 
+					//Print out Headers
 					System.out.println("Response Headers:");
 					for (Entry<String, List<String>> entry : urlConnection.getHeaderFields().entrySet()) {
 						System.out.println(entry.getKey() + " : " + entry.getValue());
 					}
 
-					System.out.println("\nResponse:");
+					//Get Response
 					InputStreamReader reader = new InputStreamReader(urlConnection.getInputStream());
 					BufferedReader in = new BufferedReader(reader);
 					String inputLine;
@@ -92,6 +93,7 @@ public class Client extends JFrame {
 					System.out.println("File Received");
 					System.out.println("Request took: " + (System.currentTimeMillis() - startTime) + "ms" );
 
+					//Put the file to the screen
 					fileLabel.setText(sb.toString());
 					fileLabel.setSize(250, 250);
 					setSize(500, 500);
@@ -107,7 +109,6 @@ public class Client extends JFrame {
 
 		fileLabel = new JTextArea();
 		fileLabel.setEditable(false);
-
 		contentPane.add(fileLabel, BorderLayout.CENTER);
 
 	}
