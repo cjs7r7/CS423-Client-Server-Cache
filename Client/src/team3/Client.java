@@ -21,27 +21,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class Client extends JFrame{
+public class Client extends JFrame {
 
-	//Default
+	// Default
 	private static final long serialVersionUID = 1L;
 
-	//Variables
+	// Variables
 	URLConnection urlConnection;
 	private static final String SERVERCON = "http://10.205.1.6:80";
-	//private static final String TEST = "Server.com/";
-	JComboBox<String> cb;
-	JTextArea fileLabel;
+	private final static String[] choices = { "index", "pete", "repeat" };
+	private JComboBox<String> cb;
+	private JTextArea fileLabel;
 
 	public Client() {
-		//On window close - close application
+		// On window close - close application
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
 
-		//Generate Screen
+		// Generate Screen
 		Container contentPane = getContentPane();
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.NORTH);
@@ -49,8 +49,7 @@ public class Client extends JFrame{
 		JLabel label = new JLabel("Select a file to retreive: ");
 		panel.add(label);
 
-		// Line to input
-		String[] choices = {"index", "pete", "repeat"};
+		// Retrieve what file?
 		cb = new JComboBox<>(choices);
 		panel.add(cb);
 
@@ -64,34 +63,40 @@ public class Client extends JFrame{
 					System.out.println("Button Pressed");
 					String file = (String) cb.getSelectedItem();
 					System.out.println("Retrieving File " + file);
+
+					long startTime = System.currentTimeMillis();
 					
 					if (file.equals("index"))
 						urlConnection = (new URL(SERVERCON).openConnection());
 					else
 						urlConnection = (new URL(SERVERCON + "/" + file).openConnection());
 					
+					//Header with Epoch Time 1
+					urlConnection.setRequestProperty("Time1", ((Long)System.currentTimeMillis()).toString());
+
 					System.out.println("Response Headers:");
-					for (Entry<String, List<String>> entry: urlConnection.getHeaderFields().entrySet()) {
+					for (Entry<String, List<String>> entry : urlConnection.getHeaderFields().entrySet()) {
 						System.out.println(entry.getKey() + " : " + entry.getValue());
 					}
-					
+
 					System.out.println("\nResponse:");
 					InputStreamReader reader = new InputStreamReader(urlConnection.getInputStream());
 					BufferedReader in = new BufferedReader(reader);
 					String inputLine;
 
 					StringBuffer sb = new StringBuffer();
-			        while ((inputLine = in.readLine()) != null) 
-			            sb.append(inputLine);
-			        in.close();
-					
+					while ((inputLine = in.readLine()) != null)
+						sb.append(inputLine + "\n");
+					in.close();
+
 					System.out.println("File Received");
-			        
+					System.out.println("Request took: " + (System.currentTimeMillis() - startTime) + "ms" );
+
 					fileLabel.setText(sb.toString());
 					fileLabel.setSize(250, 250);
 					setSize(500, 500);
-					
-			        in.close();
+
+					in.close();
 				} catch (IOException error) {
 					System.out.println(error);
 				}
@@ -99,21 +104,17 @@ public class Client extends JFrame{
 
 		});
 		contentPane.add(getFileButton, BorderLayout.SOUTH);
-		
+
 		fileLabel = new JTextArea();
 		fileLabel.setEditable(false);
-        
-        contentPane.add(fileLabel, BorderLayout.CENTER);
 
-		
+		contentPane.add(fileLabel, BorderLayout.CENTER);
+
 	}
-	
-	
-	
-	
+
 	public static void main(String[] args) {
 		Client frame = new Client();
-		//frame.pack();
+		// frame.pack();
 		frame.setSize(500, 500);
 		frame.setVisible(true);
 	}
