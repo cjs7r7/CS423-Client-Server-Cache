@@ -12,18 +12,17 @@ public class Server {
 	private static int portNumber = 80;
 
 	public static void main(String[] args) throws IOException {
-				
+		
         Socket socket;
-		ExecutorService executor = Executors.newCachedThreadPool();
+		ExecutorService executor = Executors.newFixedThreadPool(3);
 		try {
 			while (true) {
 				System.out.println(Thread.currentThread().getName() + " - Server listening on port 80");
 				serverSocket = new ServerSocket(portNumber);
+				
+				// wait for client
 				socket = serverSocket.accept();
 				System.out.println(Thread.currentThread().getName() + " - Client connected");
-
-				System.out.println(Thread.currentThread().getName() + " - Adding request to thread pool from "
-						+ Thread.currentThread().getName());
 
 				// add to thread queue
 				executor.submit(new Worker(socket)); // new thread
