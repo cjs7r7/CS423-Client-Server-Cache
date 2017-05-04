@@ -73,6 +73,7 @@ public class Http {
 	
 	public static void setResponseHeaders(PrintWriter writer){
 		
+		writer.println("HTTP/1.1 200");
 		writer.println("Content-Type: text/html; charset=utf-8");
 		writer.println("");
 		
