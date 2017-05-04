@@ -53,17 +53,16 @@ public class Http {
 
 		if (reader.ready()) {
 			line = reader.readLine();
+			hmap.put("request", line);
+			line = reader.readLine();
+			
 			while (!line.isEmpty()) {
+				System.out.println(line);
+				key = line.substring(0, line.indexOf(":"));
+				value = line.substring(line.indexOf(":")+1);
 
-				if (line.contains(":")) {
+				hmap.put(key, value);
 
-					key = line.substring(0, line.indexOf(":"));
-					value = line.substring(line.indexOf(":"));
-
-					hmap.put(key, value);
-				} else {
-					hmap.put("request", line);
-				}
 				line = reader.readLine();
 
 			}
