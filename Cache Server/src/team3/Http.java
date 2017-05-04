@@ -51,20 +51,16 @@ public class Http {
 		String key;
 		String value;
 
-		if (reader.ready()) {
-			line = reader.readLine();
-			hmap.put("request", line);
-			line = reader.readLine();
-			
-			while (!line.isEmpty()) {
-				System.out.println(line);
+		while (!(line = reader.readLine()).isEmpty()) {
+
+			if (line.contains(":")) {
+
 				key = line.substring(0, line.indexOf(":"));
-				value = line.substring(line.indexOf(":")+1);
+				value = line.substring(line.indexOf(":"));
 
 				hmap.put(key, value);
-
-				line = reader.readLine();
-
+			} else {
+				hmap.put("request", line);
 			}
 		}
 
