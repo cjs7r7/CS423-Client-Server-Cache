@@ -4,3 +4,5 @@ Servers/
 *.classpath
 *.project
 *.prefs
+*.class
+.recommenders/
