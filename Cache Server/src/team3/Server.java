@@ -7,21 +7,23 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-	
+
 	private static ServerSocket serverSocket;
 	private static int portNumber = 80;
 
-	public static void main(String[] args) {
-		Socket socket;
+	public static void main(String[] args) throws IOException {
+				
+        Socket socket;
 		ExecutorService executor = Executors.newCachedThreadPool();
 		try {
 			while (true) {
-				System.out.println("Server listening on port 80");
+				System.out.println(Thread.currentThread().getName() + " - Server listening on port 80");
 				serverSocket = new ServerSocket(portNumber);
 				socket = serverSocket.accept();
-				System.out.println("Client connected");
+				System.out.println(Thread.currentThread().getName() + " - Client connected");
 
-				System.out.println("Adding request to thread pool from " + Thread.currentThread().getName());
+				System.out.println(Thread.currentThread().getName() + " - Adding request to thread pool from "
+						+ Thread.currentThread().getName());
 
 				// add to thread queue
 				executor.submit(new Worker(socket)); // new thread
