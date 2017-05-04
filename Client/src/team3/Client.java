@@ -19,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class Client extends JFrame {
@@ -71,6 +72,8 @@ public class Client extends JFrame {
 					else
 						urlConnection = (new URL(SERVERCON + "/" + file).openConnection());
 					
+					urlConnection.setConnectTimeout(5000);
+					urlConnection.setRequestProperty("Connection", "close");
 					//Header with Epoch Time 1
 					urlConnection.setRequestProperty("Time1", ((Long)System.currentTimeMillis()).toString());
 
@@ -86,12 +89,13 @@ public class Client extends JFrame {
 					String inputLine;
 
 					StringBuffer sb = new StringBuffer();
-					while ((inputLine = in.readLine()) != null)
+					while ((inputLine = in.readLine()) != null) {
 						sb.append(inputLine + "\n");
-					in.close();
+						System.out.println(inputLine);
+					}
 
-					System.out.println("File Received");
-					System.out.println("Request took: " + (System.currentTimeMillis() - startTime) + "ms" );
+					System.out.println("\nFile Received");
+					System.out.println("Request took: " + (System.currentTimeMillis() - startTime) + "ms\n" );
 
 					//Put the file to the screen
 					fileLabel.setText(sb.toString());
@@ -99,6 +103,7 @@ public class Client extends JFrame {
 					setSize(500, 500);
 
 					in.close();
+					reader.close();
 				} catch (IOException error) {
 					System.out.println(error);
 				}
@@ -109,7 +114,8 @@ public class Client extends JFrame {
 
 		fileLabel = new JTextArea();
 		fileLabel.setEditable(false);
-		contentPane.add(fileLabel, BorderLayout.CENTER);
+		
+		contentPane.add(new JScrollPane(fileLabel), BorderLayout.CENTER);
 
 	}
 
