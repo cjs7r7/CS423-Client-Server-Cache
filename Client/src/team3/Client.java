@@ -30,7 +30,7 @@ public class Client extends JFrame {
 	// Variables
 	URLConnection urlConnection;
 	private static final String SERVERCON = "http://10.205.1.6:80";
-	private final static String[] choices = { "index", "pete", "repeat" };
+	private final static String[] choices = { "index", "test.html" };
 	private JComboBox<String> cb;
 	private JTextArea fileLabel;
 
@@ -65,7 +65,7 @@ public class Client extends JFrame {
 					String file = (String) cb.getSelectedItem();
 					System.out.println("Retrieving File " + file);
 
-					long startTime = System.currentTimeMillis();
+					long startTime = 0, endTime = 0;
 					
 					if (file.equals("index"))
 						urlConnection = (new URL(SERVERCON).openConnection());
@@ -81,7 +81,14 @@ public class Client extends JFrame {
 					System.out.println("Response Headers:");
 					for (Entry<String, List<String>> entry : urlConnection.getHeaderFields().entrySet()) {
 						System.out.println(entry.getKey() + " : " + entry.getValue());
+						if(entry.getKey().equals("x-epoch-request"))
+							startTime = Long.parseLong(entry.getValue().get(0));
+						else if(entry.getKey().equals("x-epoch-response"))
+							endTime = Long.parseLong(entry.getValue().get(0));
 					}
+					
+					if (startTime > 0 && endTime > 0)
+						System.out.println("Time Took: " + (endTime - startTime) + "ms");
 
 					//Get Response
 					InputStreamReader reader = new InputStreamReader(urlConnection.getInputStream());
