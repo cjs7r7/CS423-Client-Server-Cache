@@ -12,12 +12,12 @@ public class Worker implements Runnable {
 
 	private Socket socket;
 	private static final String webServer = "127.0.0.1:8080"; // port 8080
+	private long requestTime = System.currentTimeMillis();;
 
 	private Repository database = Repository.getInstance();
 
 	public Worker(Socket socket) {
-		this.socket = socket;
-
+		this.socket = socket; 
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class Worker implements Runnable {
 
 			// setting the response headers
 			System.out.println(Thread.currentThread().getName() + " - Setting Output Headers");
-			Http.setResponseHeaders(writer);
+			Http.setResponseHeaders(writer, requestTime);
 			
 			// returning file
 			System.out.println(Thread.currentThread().getName() + " - Setting Output Body");
