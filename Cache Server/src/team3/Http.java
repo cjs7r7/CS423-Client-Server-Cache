@@ -74,8 +74,8 @@ public class Http {
 		writer.println("Content-Type: text/html; charset=utf-8");
 		writer.println("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 		writer.println("Pragma: no-cache");
-		writer.println("X-epoch-request: " + requestTime);
-		writer.println("X-epoch-response: " + System.currentTimeMillis());
+		writer.println("x-epoch-request: " + requestTime);
+		writer.println("x-epoch-response: " + System.currentTimeMillis());
 		writer.println("X-nananana: Batcache");
 		writer.println("");
 	}

@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,18 +27,12 @@ public class Client extends JFrame {
 
 	// Variables
 	URLConnection urlConnection;
-	private static final String SERVERCON = "http://10.205.1.6:80";
+	private static final String SERVERCON = "http://server.com";
 	private final static String[] choices = { "index", "test.html" };
 	private JComboBox<String> cb;
 	private JTextArea fileLabel;
 
 	public Client() {
-		// On window close - close application
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
 
 		// Generate Screen
 		Container contentPane = getContentPane();
@@ -81,9 +73,9 @@ public class Client extends JFrame {
 					System.out.println("Response Headers:");
 					for (Entry<String, List<String>> entry : urlConnection.getHeaderFields().entrySet()) {
 						System.out.println(entry.getKey() + " : " + entry.getValue());
-						if(entry.getKey().equals("x-epoch-request"))
+						if("x-epoch-request".equals(entry.getKey()))
 							startTime = Long.parseLong(entry.getValue().get(0));
-						else if(entry.getKey().equals("x-epoch-response"))
+						else if("x-epoch-response".equals(entry.getKey()))
 							endTime = Long.parseLong(entry.getValue().get(0));
 					}
 					
@@ -98,7 +90,7 @@ public class Client extends JFrame {
 					StringBuffer sb = new StringBuffer();
 					while ((inputLine = in.readLine()) != null) {
 						sb.append(inputLine + "\n");
-						System.out.println(inputLine);
+						//System.out.println(inputLine);
 					}
 
 					System.out.println("\nFile Received");
@@ -130,6 +122,7 @@ public class Client extends JFrame {
 		Client frame = new Client();
 		// frame.pack();
 		frame.setSize(500, 500);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 
