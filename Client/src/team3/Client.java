@@ -28,7 +28,7 @@ public class Client extends JFrame {
 	// Variables
 	URLConnection urlConnection;
 	private static final String SERVERCON = "http://server.com";
-	private final static String[] choices = { "index", "lorem.html", "test.html", "LargeAndRandom.txt" };
+	private final static String[] choices = { "index", "lorem.html", "test.html", "LargeAndRandom.txt", "ExtremelyLarge.txt" };
 	private JComboBox<String> cb;
 	private JTextArea fileLabel;
 
