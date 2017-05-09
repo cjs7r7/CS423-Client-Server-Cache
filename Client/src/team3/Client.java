@@ -80,20 +80,6 @@ public class Client extends JFrame {
 							time3 = Long.parseLong(entry.getValue().get(0));
 					}
 					
-					Long time4 = System.currentTimeMillis();
-					
-					//Print Times
-					if (time2 > 0 && time3 > 0) {
-						System.out.println(time1);
-						System.out.println(time2);
-						System.out.println(time3);
-						System.out.println(time4);
-						System.out.println("Request Time: " + (time2 - time1) + "ms");
-						System.out.println("Process Time: " + (time3 - time2) + "ms");
-						System.out.println("Transfer Time: " + (time4 - time3) + "ms");
-						System.out.println("Total Time: " + (time4 - time1) + "ms");
-					}	
-
 					//Get Response
 					InputStreamReader reader = new InputStreamReader(urlConnection.getInputStream());
 					BufferedReader in = new BufferedReader(reader);
@@ -104,8 +90,19 @@ public class Client extends JFrame {
 						sb.append(inputLine + "\n");
 					}
 
-					System.out.println("File Received\n");
+					System.out.println("File Received");
+					Long time4 = System.currentTimeMillis();
 
+					//Print Times
+					if (time2 > 0 && time3 > 0) {
+						System.out.println("Request Time: " + (time2 - time1) + "ms");
+						System.out.println("Process Time: " + (time3 - time2) + "ms");
+						System.out.println("Transfer Time: " + (time4 - time3) + "ms");
+						System.out.println("Total Time: " + (time4 - time1) + "ms");
+					}	
+
+					System.out.println();
+					
 					//Put the file to the screen
 					fileLabel.setText(sb.toString());
 					fileLabel.setSize(250, 250);
