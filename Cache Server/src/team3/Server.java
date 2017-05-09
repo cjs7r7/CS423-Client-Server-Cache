@@ -14,7 +14,7 @@ public class Server {
 	public static void main(String[] args) throws IOException {
 		
         Socket socket;
-		ExecutorService executor = Executors.newFixedThreadPool(3);
+		ExecutorService executor = Executors.newCachedThreadPool();
 		try {
 			while (true) {
 				System.out.println(Thread.currentThread().getName() + " - Server listening on port 80");

@@ -104,8 +104,9 @@ public class Client extends JFrame {
 						System.out.println("Total Time: " + (time4 - time1) + "ms");
 					}	
 					Long transferTime = time4 - time3;
-					Double transferTimeSec = Double.longBitsToDouble(transferTime.byteValue());
-					System.out.println("MBps: " + (fileSize / transferTimeSec) + "\n");
+
+					Double transferTimeSec = ((double) transferTime)/1000;
+					System.out.println("MBps: " + ((fileSize/1000000) / transferTimeSec) + "\n");
 					
 					//Put the file to the screen
 					fileLabel.setText(sb.toString());
