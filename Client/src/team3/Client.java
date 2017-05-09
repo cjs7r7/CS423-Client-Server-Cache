@@ -58,6 +58,7 @@ public class Client extends JFrame {
 					System.out.println("Retrieving File " + file);
 
 					long time2 = 0, time3 = 0;
+					double fileSize = 0;
 					
 					//Header with Epoch Time 1
 					Long time1 = System.currentTimeMillis();
@@ -78,6 +79,8 @@ public class Client extends JFrame {
 							time2 = Long.parseLong(entry.getValue().get(0));
 						else if("x-epoch-response".equals(entry.getKey()))
 							time3 = Long.parseLong(entry.getValue().get(0));
+						else if("Content-Length".equals(entry.getKey()))
+							fileSize = Double.parseDouble(entry.getValue().get(0));
 					}
 					
 					//Get Response
@@ -100,8 +103,9 @@ public class Client extends JFrame {
 						System.out.println("Transfer Time: " + (time4 - time3) + "ms");
 						System.out.println("Total Time: " + (time4 - time1) + "ms");
 					}	
-
-					System.out.println();
+					Long transferTime = time4 - time3;
+					Double transferTimeSec = Double.longBitsToDouble(transferTime.byteValue());
+					System.out.println("MBps: " + (fileSize / transferTimeSec) + "\n");
 					
 					//Put the file to the screen
 					fileLabel.setText(sb.toString());
