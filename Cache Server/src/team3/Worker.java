@@ -64,7 +64,7 @@ public class Worker implements Runnable {
 
 			// setting the response headers
 			System.out.println(Thread.currentThread().getName() + " - Setting Output Headers");
-			Http.setResponseHeaders(writer, requestTime);
+			Http.setResponseHeaders(writer, requestTime, database.getEntry(uri).getBytes().length);
 			
 			// returning file
 			System.out.println(Thread.currentThread().getName() + " - Setting Output Body");
@@ -83,7 +83,8 @@ public class Worker implements Runnable {
 				System.out.println(i);
 			}
 			
-			System.out.println(Thread.currentThread().getName() + " - Done");
+			long totalTime = System.currentTimeMillis() - requestTime;
+			System.out.println(Thread.currentThread().getName() + " - Done in " + totalTime + " ms");
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
