@@ -57,30 +57,42 @@ public class Client extends JFrame {
 					String file = (String) cb.getSelectedItem();
 					System.out.println("Retrieving File " + file);
 
-					long startTime = 0, endTime = 0;
+					long time2 = 0, time3 = 0;
+					
+					//Header with Epoch Time 1
+					Long time1 = System.currentTimeMillis();
 					
 					if (file.equals("index"))
 						urlConnection = (new URL(SERVERCON).openConnection());
 					else
 						urlConnection = (new URL(SERVERCON + "/" + file).openConnection());
 					
-					urlConnection.setConnectTimeout(5000);
 					urlConnection.setRequestProperty("Connection", "close");
-					//Header with Epoch Time 1
-					urlConnection.setRequestProperty("Time1", ((Long)System.currentTimeMillis()).toString());
+					//urlConnection.setRequestProperty("Time1", ((Long)time1).toString());
 
 					//Print out Headers
 					System.out.println("Response Headers:");
 					for (Entry<String, List<String>> entry : urlConnection.getHeaderFields().entrySet()) {
 						System.out.println(entry.getKey() + " : " + entry.getValue());
 						if("x-epoch-request".equals(entry.getKey()))
-							startTime = Long.parseLong(entry.getValue().get(0));
+							time2 = Long.parseLong(entry.getValue().get(0));
 						else if("x-epoch-response".equals(entry.getKey()))
-							endTime = Long.parseLong(entry.getValue().get(0));
+							time3 = Long.parseLong(entry.getValue().get(0));
 					}
 					
-					if (startTime > 0 && endTime > 0)
-						System.out.println("Time Took: " + (endTime - startTime) + "ms");
+					Long time4 = System.currentTimeMillis();
+					
+					//Print Times
+					if (time2 > 0 && time3 > 0) {
+						System.out.println(time1);
+						System.out.println(time2);
+						System.out.println(time3);
+						System.out.println(time4);
+						System.out.println("Request Time: " + (time2 - time1) + "ms");
+						System.out.println("Process Time: " + (time3 - time2) + "ms");
+						System.out.println("Transfer Time: " + (time4 - time3) + "ms");
+						System.out.println("Total Time: " + (time4 - time1) + "ms");
+					}	
 
 					//Get Response
 					InputStreamReader reader = new InputStreamReader(urlConnection.getInputStream());
@@ -90,11 +102,9 @@ public class Client extends JFrame {
 					StringBuffer sb = new StringBuffer();
 					while ((inputLine = in.readLine()) != null) {
 						sb.append(inputLine + "\n");
-						//System.out.println(inputLine);
 					}
 
-					System.out.println("\nFile Received");
-					System.out.println("Request took: " + (System.currentTimeMillis() - startTime) + "ms\n" );
+					System.out.println("File Received\n");
 
 					//Put the file to the screen
 					fileLabel.setText(sb.toString());
