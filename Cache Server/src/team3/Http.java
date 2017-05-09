@@ -67,13 +67,14 @@ public class Http {
 		return hmap;
 	}
 
-	public static void setResponseHeaders(PrintWriter writer, Long requestTime) {
+	public static void setResponseHeaders(PrintWriter writer, Long requestTime, int length) {
 
 		writer.println("HTTP/1.1 200");
 		writer.println("Connection: close");
 		writer.println("Content-Type: text/html; charset=utf-8");
 		writer.println("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 		writer.println("Pragma: no-cache");
+		writer.println("Content-Length: " + length);
 		writer.println("x-epoch-request: " + requestTime);
 		writer.println("x-epoch-response: " + System.currentTimeMillis());
 		writer.println("X-nananana: Batcache");
