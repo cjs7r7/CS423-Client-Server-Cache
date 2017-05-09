@@ -30,16 +30,11 @@ public class Worker implements Runnable {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			HashMap<String, String> hmap = Http.getHeaders(reader);
 			
-			System.out.println("done with headers");
-
-			// display headers
-			System.out.println(hmap.keySet().toString());
-			
 			System.out.println("augsdfuhasd");
 			
 			for (String key : hmap.keySet()) {
-				System.out.println("key: " + key);
-				System.out.println("value: " + hmap.get(key));
+				System.out.println(Thread.currentThread().getName() + " - key: " + key);
+				System.out.println(Thread.currentThread().getName() + " - value: " + hmap.get(key));
 			}
 			
 			// pull specific file requested
@@ -50,7 +45,7 @@ public class Worker implements Runnable {
 			else{
 				uri = hmap.get("request").split(" ")[1];
 			}
-			System.out.println("Requested: '"+uri+"'");
+			System.out.println(Thread.currentThread().getName() + " - Requested: '"+uri+"'");
 			
 			// check cache for page uri
 			if( database.hasKey(uri) ){
